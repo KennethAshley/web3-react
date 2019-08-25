@@ -1,3 +1,6 @@
+import Web3 from 'web3'
+import { extend } from 'thorify/dist/extend'
+
 import { Provider } from '../manager'
 import Connector, { ErrorCodeMixin, ConnectorArguments } from './connector'
 
@@ -13,10 +16,10 @@ export default class InjectedConnector extends ErrorCodeMixin(Connector, Injecte
   }
 
   public async onActivation(): Promise<void> {
-    const { ethereum, web3 } = window
+    const { thor } = window
 
-    if (ethereum) {
-      await ethereum.enable().catch(
+    if (thor) {
+      await thor.enable().catch(
         (error: any): any => {
           const deniedAccessError: Error = Error(error)
           deniedAccessError.code = InjectedConnector.errorCodes.ETHEREUM_ACCESS_DENIED
@@ -24,28 +27,19 @@ export default class InjectedConnector extends ErrorCodeMixin(Connector, Injecte
         }
       )
 
-      // initialize event listeners
-      if (ethereum.on) {
-        ethereum.on('networkChanged', this.networkChangedHandler)
-        ethereum.on('accountsChanged', this.accountsChangedHandler)
+      if (thor.on) {
+        thor.on('networkChanged', this.networkChangedHandler)
+        thor.on('accountsChanged', this.accountsChangedHandler)
 
         this.runOnDeactivation.push(
           (): void => {
-            if (ethereum.removeListener) {
-              ethereum.removeListener('networkChanged', this.networkChangedHandler)
-              ethereum.removeListener('accountsChanged', this.accountsChangedHandler)
+            if (thor.removeListener) {
+              thor.removeListener('networkChanged', this.networkChangedHandler)
+              thor.removeListener('accountsChanged', this.accountsChangedHandler)
             }
           }
         )
       }
-
-      if (ethereum.isMetaMask) {
-        ethereum.autoRefreshOnNetworkChange = false
-      }
-    } else if (web3) {
-      const legacyError: Error = Error('Your web3 provider is outdated, please upgrade to a modern provider.')
-      legacyError.code = InjectedConnector.errorCodes.LEGACY_PROVIDER
-      throw legacyError
     } else {
       const noWeb3Error: Error = Error('Your browser is not equipped with web3 capabilities.')
       noWeb3Error.code = InjectedConnector.errorCodes.NO_WEB3
@@ -54,8 +48,10 @@ export default class InjectedConnector extends ErrorCodeMixin(Connector, Injecte
   }
 
   public async getProvider(): Promise<Provider> {
-    const { ethereum } = window
-    return ethereum
+    const { thor } = window
+    const web3 = new Web3(thor)
+
+    return extend(web3)
   }
 
   public async getAccount(provider: Provider): Promise<string> {

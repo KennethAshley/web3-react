@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+
 import { MutableRefObject, useEffect, useReducer, useRef } from 'react'
 
 import { Connector } from './connectors'
@@ -184,6 +185,7 @@ export default function useWeb3Manager(connectors: Connectors): Web3Manager {
     const callingTimeRefId = refId.current
     incrementRefId()
 
+    // eslint-disable-next-line no-console
     const validConnectorNames = Object.keys(connectors)
     const connector: Connector = connectors[connectorName]
 
@@ -207,6 +209,7 @@ export default function useWeb3Manager(connectors: Connectors): Web3Manager {
       const provider = await connector.getProvider(networkId)
       const networkIdPromise = connector.getNetworkId(provider)
       const accountPromise = connector.getAccount(provider)
+
       await Promise.all([networkIdPromise, accountPromise]).then(
         ([networkId, account]): void => {
           if (refId.current !== callingTimeRefId + 1) {
@@ -242,6 +245,7 @@ export default function useWeb3Manager(connectors: Connectors): Web3Manager {
     connectorNames: string[],
     { suppressAndThrowErrors = false, networkIds = [] }: SetFirstValidConnectorOptions = {}
   ): Promise<void> {
+
     for (const connectorName of connectorNames) {
       try {
         await setConnector(connectorName, {
@@ -250,6 +254,8 @@ export default function useWeb3Manager(connectors: Connectors): Web3Manager {
         })
         break
       } catch (error) {
+        // eslint-disable-next-line
+        console.log('manager:setConnector:258: ', error);
         if (connectorName === connectorNames[connectorNames.length - 1]) {
           const error = Error('Unable to set any valid connector.')
           error.code = ManagerErrorCodes.ALL_CONNECTORS_INVALID
@@ -332,6 +338,8 @@ export default function useWeb3Manager(connectors: Connectors): Web3Manager {
     try {
       const fetchNewProvider = !web3State.provider || (updateNetworkId && !overrideNetworkIdCheck)
       const provider = await (fetchNewProvider ? activeConnector.getProvider(networkId) : web3State.provider)
+      // eslint-disable-next-line
+      console.log('manager: ', provider)
 
       const fetchNewNetworkId = web3State.networkId === undefined || (updateNetworkId && !overrideNetworkIdCheck)
       const networkIdPromise =

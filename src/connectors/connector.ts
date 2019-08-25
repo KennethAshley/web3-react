@@ -1,4 +1,5 @@
-import { ethers } from 'ethers'
+import Web3 from 'web3'
+import { extend } from 'thorify/dist/extend'
 import EventEmitter from 'events'
 
 import { Web3ReactUpdateHandlerOptions } from '../manager'
@@ -43,14 +44,19 @@ export default abstract class Connector extends ErrorCodeMixin(EventEmitter, Con
   public abstract async getProvider(networkId?: number): Promise<Provider>
 
   public async getNetworkId(provider: Provider): Promise<number> {
-    const library = new ethers.providers.Web3Provider(provider)
-    const networkId = await library.getNetwork().then((network): number => network.chainId)
+    const web3 = new Web3(provider);
+    extend(web3)
+
+    const chainTagHex = await web3.eth.getChainTag()
+    const networkId = parseInt(chainTagHex, 16)
     return this._validateNetworkId(networkId)
   }
 
   public async getAccount(provider: Provider): Promise<string | null> {
-    const library = new ethers.providers.Web3Provider(provider)
-    const account = await library.listAccounts().then((accounts): string | null => accounts[0] || null)
+    const web3 = new Web3(provider);
+    extend(web3)
+
+    const [account] = await web3.eth.getAccounts()
     return account
   }
 

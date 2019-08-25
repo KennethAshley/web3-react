@@ -1,5 +1,6 @@
 import React, { Component, Fragment, useContext } from 'react'
 import { ethers } from 'ethers'
+import { extend } from 'thorify/dist/extend'
 
 import _Web3Context, { Library, Web3Context } from './context'
 import useWeb3Manager from './manager'
@@ -37,11 +38,16 @@ function Web3Provider({ connectors, libraryName, web3Api: Web3, children }: Web3
   const providerToInject =
     provider &&
     ((): Library => {
+      let web3;
+
       switch (libraryName) {
         case 'ethers.js':
           return new ethers.providers.Web3Provider(provider)
         case 'web3.js':
-          return new Web3(provider)
+          web3 = new Web3(provider)
+          extend(web3)
+
+          return web3
         case null:
           return provider
       }
