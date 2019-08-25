@@ -1,8 +1,8 @@
 {
-  "name": "web3-react",
-  "version": "5.0.4",
+  "name": "web3-react-thor",
+  "version": "1.0.0",
   "description": "A simple, powerful framework for building modern Ethereum dApps using React.",
-  "author": "Noah Zinsmeister <noahwz@gmail.com>",
+  "author": "Kenneth Ashley <ken.u.diggitt@gmail.com>",
   "keywords": [
     "react",
     "react-hooks",
@@ -14,12 +14,7 @@
     "context",
     "frontend",
     "dapp",
-    "metamask",
-    "trust-wallet",
-    "tokenary",
-    "trezor",
-    "ledger",
-    "infura",
+    "vechain",
     "quiknode",
     "walletconnect",
     "formatic",
@@ -28,11 +23,11 @@
   "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NoahZinsmeister/web3-react.git"
+    "url": "git+https://github.com/KennethAshley/web3-react.git"
   },
-  "homepage": "https://github.com/NoahZinsmeister/web3-react#readme",
+  "homepage": "https://github.com/KennethAshley/web3-react#readme",
   "bugs": {
-    "url": "https://github.com/NoahZinsmeister/web3-react/issues"
+    "url": "https://github.com/KennethAshley/web3-react/issues"
   },
   "main": "./dist/index.js",
   "scripts": {
