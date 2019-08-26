@@ -338,8 +338,6 @@ export default function useWeb3Manager(connectors: Connectors): Web3Manager {
     try {
       const fetchNewProvider = !web3State.provider || (updateNetworkId && !overrideNetworkIdCheck)
       const provider = await (fetchNewProvider ? activeConnector.getProvider(networkId) : web3State.provider)
-      // eslint-disable-next-line
-      console.log('manager: ', provider)
 
       const fetchNewNetworkId = web3State.networkId === undefined || (updateNetworkId && !overrideNetworkIdCheck)
       const networkIdPromise =
