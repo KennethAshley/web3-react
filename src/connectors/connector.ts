@@ -47,7 +47,10 @@ export default abstract class Connector extends ErrorCodeMixin(EventEmitter, Con
     const web3 = new Web3(provider);
     extend(web3)
 
+    // @ts-ignore-start
     const chainTagHex = await web3.eth.getChainTag()
+    // @ts-ignore-end
+
     const networkId = parseInt(chainTagHex, 16)
     return this._validateNetworkId(networkId)
   }
@@ -56,7 +59,10 @@ export default abstract class Connector extends ErrorCodeMixin(EventEmitter, Con
     const web3 = new Web3(provider);
     extend(web3)
 
+    // @ts-ignore-start
     const [account] = await web3.eth.getAccounts()
+    // @ts-ignore-end
+    
     return account
   }
 
