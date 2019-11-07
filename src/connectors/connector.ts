@@ -59,7 +59,7 @@ export default abstract class Connector extends ErrorCodeMixin(EventEmitter, Con
         purpose: 'identification',
         payload: {
           type: 'text',
-          content: 'random generated string'
+          content: 'Grant Vexchange access'
         }
     })
 
