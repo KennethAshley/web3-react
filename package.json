@@ -1,33 +1,28 @@
 {
-  "name": "web3-react-thor",
-  "version": "1.0.2",
-  "description": "A simple, powerful framework for building modern Ethereum dApps using React.",
+  "name": "connex-react",
+  "version": "1.0.0",
+  "description": "A simple, powerful framework for building modern Connex dApps using React.",
   "author": "Kenneth Ashley <ken.u.diggitt@gmail.com>",
   "keywords": [
     "react",
     "react-hooks",
     "hooks",
-    "ethereum",
+    "vechain",
     "solidity",
     "javascript",
-    "web3",
+    "connex",
     "context",
     "frontend",
-    "dapp",
-    "vechain",
-    "quiknode",
-    "walletconnect",
-    "formatic",
-    "portis"
+    "dapp"
   ],
   "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KennethAshley/web3-react.git"
+    "url": "git+https://github.com/KennethAshley/connex-react.git"
   },
-  "homepage": "https://github.com/KennethAshley/web3-react#readme",
+  "homepage": "https://github.com/KennethAshley/connex-react#readme",
   "bugs": {
-    "url": "https://github.com/KennethAshley/web3-react/issues"
+    "url": "https://github.com/KennethAshley/connex-react/issues"
   },
   "main": "./dist/index.js",
   "scripts": {

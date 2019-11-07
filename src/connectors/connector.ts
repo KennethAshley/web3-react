@@ -1,6 +1,5 @@
-import Web3 from 'web3'
-import { extend } from 'thorify/dist/extend'
 import EventEmitter from 'events'
+import { ethers } from 'ethers'
 
 import { Web3ReactUpdateHandlerOptions } from '../manager'
 import { Provider } from '../manager'
@@ -44,26 +43,27 @@ export default abstract class Connector extends ErrorCodeMixin(EventEmitter, Con
   public abstract async getProvider(networkId?: number): Promise<Provider>
 
   public async getNetworkId(provider: Provider): Promise<number> {
-    const web3 = new Web3(provider);
-    extend(web3)
+    const block = await provider.thor.block(0).get()
+    const hex = ethers.utils.arrayify(block.id)
+    const networkId = Array.from(hex).pop()
 
-    // @ts-ignore-start
-    const chainTagHex = await web3.eth.getChainTag()
-    // @ts-ignore-end
-
-    const networkId = parseInt(chainTagHex, 16)
-    return this._validateNetworkId(networkId)
+    return this._validateNetworkId(Number(networkId))
   }
 
   public async getAccount(provider: Provider): Promise<string | null> {
-    const web3 = new Web3(provider);
-    extend(web3)
+    const signingService = provider.vendor.sign('cert')
 
-    // @ts-ignore-start
-    const [account] = await web3.eth.getAccounts()
-    // @ts-ignore-end
-    
-    return account
+    const { annex } = await signingService
+      .link('https://connex.vecha.in/{certid}')
+      .request({
+        purpose: 'identification',
+        payload: {
+          type: 'text',
+          content: 'random generated string'
+        }
+    })
+
+    return annex.signer
   }
 
   protected _validateNetworkId(networkId: number): number {

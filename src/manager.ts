@@ -254,8 +254,6 @@ export default function useWeb3Manager(connectors: Connectors): Web3Manager {
         })
         break
       } catch (error) {
-        // eslint-disable-next-line
-        console.log('manager:setConnector:258: ', error);
         if (connectorName === connectorNames[connectorNames.length - 1]) {
           const error = Error('Unable to set any valid connector.')
           error.code = ManagerErrorCodes.ALL_CONNECTORS_INVALID

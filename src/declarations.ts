@@ -16,6 +16,7 @@ declare interface Window {
   ethereum?: Ethereum
   web3?: any
   thor?: any
+  connex?: any
 }
 
 declare interface Error {

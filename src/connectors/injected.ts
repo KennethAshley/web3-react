@@ -1,6 +1,3 @@
-import Web3 from 'web3'
-import { extend } from 'thorify/dist/extend'
-
 import { Provider } from '../manager'
 import Connector, { ErrorCodeMixin, ConnectorArguments } from './connector'
 
@@ -48,10 +45,9 @@ export default class InjectedConnector extends ErrorCodeMixin(Connector, Injecte
   }
 
   public async getProvider(): Promise<Provider> {
-    const { thor } = window
-    const web3 = new Web3(thor)
+    const { connex } = window
 
-    return extend(web3)
+    return connex
   }
 
   public async getAccount(provider: Provider): Promise<string> {

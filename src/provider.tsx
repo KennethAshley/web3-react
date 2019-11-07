@@ -9,7 +9,7 @@ export interface Connectors {
   [propName: string]: any
 }
 
-export type LibraryName = 'web3.js' | 'ethers.js' | null
+export type LibraryName = 'web3.js' | 'ethers.js' | 'connex' | null
 
 export function useWeb3Context(): Web3Context {
   return useContext(_Web3Context)
@@ -20,6 +20,7 @@ interface Web3ProviderProps {
   libraryName?: LibraryName
   web3Api?: any
   children: any
+  connex?: any
 }
 
 function Web3Provider({ connectors, libraryName, web3Api: Web3, children }: Web3ProviderProps): any {
@@ -48,6 +49,8 @@ function Web3Provider({ connectors, libraryName, web3Api: Web3, children }: Web3
           extend(web3)
 
           return web3
+        case 'connex':
+          return window.connex
         case null:
           return provider
       }
